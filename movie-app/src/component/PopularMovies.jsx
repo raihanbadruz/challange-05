@@ -4,7 +4,8 @@ import "bootstrap/dist/css/bootstrap.css";
 import { useEffect } from "react";
 import { getMovieList } from "./Api";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Nav } from "react-bootstrap";
 
 function PopularMovies() {
   const [search, setSearch] = useState("");
@@ -15,6 +16,18 @@ function PopularMovies() {
     getMovieList((data) => {
       setMovies(data.results);
     });
+  }, []);
+
+  const navigate = useNavigate();
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      setIsLoggedIn(true);
+    }
   }, []);
 
   return (
@@ -36,8 +49,28 @@ function PopularMovies() {
               onChange={(e) => setSearch(e.target.value)}
             />
             <div className="button-wrapper">
-              <button className="login">Login</button>
-              <button className="register">Register</button>
+              {isLoggedIn ? (
+                <>
+                  <Button
+                    onClick={() => {
+                      localStorage.removeItem("token");
+                      setIsLoggedIn(false);
+                      return navigate("/");
+                    }}
+                  >
+                    Logout
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button as={Link} to="/login">
+                    Login
+                  </Button>
+                  <Button as={Link} to="/register">
+                    Register
+                  </Button>
+                </>
+              )}
             </div>
           </div>
           <div className="content-wrapper">
