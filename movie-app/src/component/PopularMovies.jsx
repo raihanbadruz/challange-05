@@ -2,10 +2,10 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import "bootstrap/dist/css/bootstrap.css";
 import { useEffect } from "react";
-import { getMovieList } from "./Api";
+// import { getMovieList } from "./Api";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Nav } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import axios from "axios";
 
 function PopularMovies() {
   const [search, setSearch] = useState("");
@@ -13,12 +13,40 @@ function PopularMovies() {
   const movieBanner = movies[Math.floor(Math.random() * movies.length)];
 
   useEffect(() => {
-    getMovieList((data) => {
-      setMovies(data.results);
-    });
-  }, []);
+    const getMovieList = async () => {
+      try {
+        const token = localStorage.getItem("token");
 
-  const navigate = useNavigate();
+        const response = await axios.get(
+          `https://shy-cloud-3319.fly.dev/api/v1/movie/popular`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const data = response.data.data;
+
+        setMovies(data);
+        console.log(data);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          // If not valid token
+          if (error.response.status === 401) {
+            localStorage.removeItem("token");
+            // Temporary solution
+          }
+
+          toast.error(error.response.data.message);
+          return;
+        }
+        toast.error(error.message);
+      }
+    };
+
+    getMovieList();
+  }, []);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -55,7 +83,8 @@ function PopularMovies() {
                     onClick={() => {
                       localStorage.removeItem("token");
                       setIsLoggedIn(false);
-                      return navigate("/");
+                      // return navigate("/");
+                      window.location.href = "/";
                     }}
                   >
                     Logout

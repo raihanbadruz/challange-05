@@ -91,12 +91,12 @@ function Register() {
           </Form>
         </Col>
       </Row>
-      <Row>
+      {/* <Row>
         <Col>
           <h4 className="text-center">Or</h4>
         </Col>
       </Row>
-      {/* <Row>
+      <Row>
         <Col className="text-center">
           <GoogleLogin buttonText="Register with Google 🚀" />
         </Col>

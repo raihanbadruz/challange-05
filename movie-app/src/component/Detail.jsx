@@ -2,23 +2,47 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 function Detail() {
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState({});
   const { id } = useParams();
 
   useEffect(() => {
-    fetch(
-      `https://api.themoviedb.org/3/movie/${id}?api_key=5a1a8d073c4a8515a69dc7913d6f19ad`
-    )
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
+    const getMovieList = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        const response = await axios.get(
+          `https://shy-cloud-3319.fly.dev/api/v1/movie/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const data = response.data.data;
+
         setMovies(data);
         console.log(data);
-      });
-  }, [id]);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          // If not valid token
+          if (error.response.status === 401) {
+            localStorage.removeItem("token");
+            // Temporary solution
+          }
+
+          toast.error(error.response.data.message);
+          return;
+        }
+        toast.error(error.message);
+      }
+    };
+
+    getMovieList();
+  }, []);
 
   return (
     <div className="wrapper">
@@ -40,20 +64,14 @@ function Detail() {
             <div className="card-body">
               <h1 className="card-title">{movies.original_title}</h1>
               <p className="card-text">{movies.overview}</p>
-              <p className="card-text">Tagline : {movies.tagline}</p>
-              <p className="card-text">
-                Site : <a href={movies.homepage}>{movies.homepage}</a>
-              </p>
-              <p className="card-text">Popularity : {movies.popularity}</p>
-              <p className="card-text">Budget : ${movies.budget}</p>
-              <p className="card-text">Revenue : ${movies.revenue}</p>
+              <p className="card-text">Rating : {movies.vote_average}</p>
               <p className="card-text">
                 <small className="">Release Date : {movies.release_date}</small>
               </p>
             </div>
           </div>
         </div>
-        <Link to={`/`}>
+        <Link to="/">
           <button type="button" className="btn btn-success">
             Back to Home
           </button>

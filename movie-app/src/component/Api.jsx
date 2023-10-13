@@ -1,14 +1,20 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 
-export const getMovieList = (callback) => {
-  axios
-    .get(
-      "https://api.themoviedb.org/3/movie/popular?api_key=a3a22845e640c4d14e12f64c9de1107d"
-    )
-    .then((res) => {
-      callback(res.data);
-    })
-    .catch((err) => {
-      console.log(err);
+export const getMovieList = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    await axios.get("https://shy-cloud-3319.fly.dev/api/v1/movie/popular", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      toast.error(error.response.data.message);
+      return;
+    }
+    toast.error(error.message);
+  }
 };
