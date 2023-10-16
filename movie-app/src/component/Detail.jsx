@@ -28,10 +28,8 @@ function Detail() {
         console.log(data);
       } catch (error) {
         if (axios.isAxiosError(error)) {
-          // If not valid token
           if (error.response.status === 401) {
             localStorage.removeItem("token");
-            // Temporary solution
           }
 
           toast.error(error.response.data.message);
@@ -53,13 +51,6 @@ function Detail() {
       />
       <div className="card-detail m-5">
         <div className="row g-0">
-          <div className="col-md-2">
-            <img
-              src={`https://image.tmdb.org/t/p/w200${movies.poster_path}`}
-              className="img-fluid rounded-start border border-danger-subtle"
-              alt="..."
-            />
-          </div>
           <div className="col-md">
             <div className="card-body">
               <h1 className="card-title">{movies.original_title}</h1>
@@ -70,12 +61,12 @@ function Detail() {
               </p>
             </div>
           </div>
+          <Link to="/">
+            <button type="button" className="btn btn-success">
+              Back to Home
+            </button>
+          </Link>
         </div>
-        <Link to="/">
-          <button type="button" className="btn btn-success">
-            Back to Home
-          </button>
-        </Link>
       </div>
     </div>
   );

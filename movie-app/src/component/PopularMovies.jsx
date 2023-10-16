@@ -2,13 +2,13 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import "bootstrap/dist/css/bootstrap.css";
 import { useEffect } from "react";
-// import { getMovieList } from "./Api";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
 function PopularMovies() {
   const [search, setSearch] = useState("");
+  const [searchList, setSearchList] = useState([]);
   const [movies, setMovies] = useState([]);
   const movieBanner = movies[Math.floor(Math.random() * movies.length)];
 
@@ -32,10 +32,8 @@ function PopularMovies() {
         console.log(data);
       } catch (error) {
         if (axios.isAxiosError(error)) {
-          // If not valid token
           if (error.response.status === 401) {
             localStorage.removeItem("token");
-            // Temporary solution
           }
 
           toast.error(error.response.data.message);
@@ -57,6 +55,42 @@ function PopularMovies() {
       setIsLoggedIn(true);
     }
   }, []);
+
+  useEffect(() => {
+    const searchMovieList = async () => {
+      const searchMovie = search;
+      try {
+        const token = localStorage.getItem("token");
+
+        const response = await axios.get(
+          `https://shy-cloud-3319.fly.dev/api/v1/search/movie?page=1&query=${searchMovie}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const data = response.data.data;
+        setSearchList(data);
+        console.log(setSearchList);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          // If not valid token
+          if (error.response.status === 401) {
+            localStorage.removeItem("token");
+            // Temporary solution
+          }
+          toast.error(error.response.data.message);
+          return;
+        }
+        toast.error(error.message);
+      }
+    };
+
+    searchMovieList();
+  }, [search]);
+  const moviesFilter = search.length >= 2 ? searchList : movies;
 
   return (
     <>
@@ -113,34 +147,27 @@ function PopularMovies() {
         <div className="app-header">
           <h2>Popular Movies</h2>
           <div className="movie-container d-flex flex-wrap m-5">
-            {movies.length > 0 &&
-              movies
-                .filter((movie) => {
-                  return search.toLowerCase() === ""
-                    ? movie
-                    : movie.title.toLowerCase().includes(search);
-                })
-                .map((movie, index) => (
-                  <Card
-                    key={index}
-                    variant="secondary"
-                    className="card-img mx-4 mb-2"
-                    style={{ width: "18rem" }}
-                  >
-                    <Card.Img />
-                    <Card.Body>
-                      <Card.Title>{movie.title}</Card.Title>
-                      <img
-                        src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
-                        alt=""
-                      />
-                      <Link to={`/Detail/${movie.id}`}>
-                        {" "}
-                        <Button variant="primary">Detail</Button>
-                      </Link>
-                    </Card.Body>
-                  </Card>
-                ))}
+            {moviesFilter.map((movie, index) => (
+              <Card
+                key={index}
+                variant="secondary"
+                className="card-img mx-4 mb-2"
+                style={{ width: "18rem" }}
+              >
+                <Card.Img />
+                <Card.Body>
+                  <Card.Title>{movie.title}</Card.Title>
+                  <img
+                    src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
+                    alt=""
+                  />
+                  <Link to={`/Detail/${movie.id}`}>
+                    {" "}
+                    <Button variant="primary">Detail</Button>
+                  </Link>
+                </Card.Body>
+              </Card>
+            ))}
           </div>
         </div>
       </div>

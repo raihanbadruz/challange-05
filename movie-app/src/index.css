@@ -22,6 +22,12 @@ div.wrapper {
 
 div.card-detail {
   position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  text-align: left;
+  padding: 20% 50% 0% 1%;
   top: 30px;
   left: 40px;
   background: transparent;
