@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 function PopularMovies() {
   const [search, setSearch] = useState("");
@@ -73,7 +74,7 @@ function PopularMovies() {
 
         const data = response.data.data;
         setSearchList(data);
-        console.log(setSearchList);
+        console.log(searchList);
       } catch (error) {
         if (axios.isAxiosError(error)) {
           // If not valid token
@@ -90,6 +91,7 @@ function PopularMovies() {
 
     searchMovieList();
   }, [search]);
+
   const moviesFilter = search.length >= 2 ? searchList : movies;
 
   return (

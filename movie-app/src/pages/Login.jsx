@@ -3,6 +3,7 @@ import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import GoogleLogin from "../component/GoogleLogin";
 
 function Login() {
   const navigate = useNavigate();
@@ -79,7 +80,7 @@ function Login() {
           </Form>
         </Col>
       </Row>
-      {/* <Row>
+      <Row>
         <Col>
           <h4 className="text-center">Or</h4>
         </Col>
@@ -88,7 +89,7 @@ function Login() {
         <Col className="text-center">
           <GoogleLogin buttonText="Login with Google 🚀" />
         </Col>
-      </Row> */}
+      </Row>
     </Container>
   );
 }
