@@ -9,7 +9,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 
 function App() {
   return (
-    <GoogleOAuthProvider clientId="261944642319-pu994v6658ojsl17svvt7581hhn65pcm.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_OAUTH_CLIENT_ID}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<PopularMovies />}></Route>

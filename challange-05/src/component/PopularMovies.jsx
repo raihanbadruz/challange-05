@@ -33,14 +33,6 @@ function PopularMovies() {
         console.log(data);
       } catch (error) {
         console.error("Error:", error);
-        // if (axios.isAxiosError(error)) {
-        //   if (error.response.status === 401) {
-        //     localStorage.removeItem("token");
-        //   }
-        //   toast.error(error.response.data.message);
-        //   return;
-        // }
-        // toast.error(error.message);
       }
     };
 
@@ -77,16 +69,6 @@ function PopularMovies() {
         console.log(searchList);
       } catch (error) {
         console.error("Error:", error);
-        // if (axios.isAxiosError(error)) {
-        //   // If not valid token
-        //   if (error.response.status === 401) {
-        //     localStorage.removeItem("token");
-        //     // Temporary solution
-        //   }
-        //   toast.error(error.response.data.message);
-        //   return;
-        // }
-        // toast.error(error.message);
       }
     };
 

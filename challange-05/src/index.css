@@ -6,6 +6,7 @@
   height: 600px;
   object-fit: cover;
   filter: brightness(40%);
+  background-color: antiquewhite;
 }
 
 .image-detail {
