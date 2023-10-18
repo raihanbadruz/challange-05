@@ -34,7 +34,7 @@ function Login() {
 
       localStorage.setItem("token", token);
 
-      navigate("/");
+      // navigate("/");
 
       // Temporary solution
       window.location.href = "/";

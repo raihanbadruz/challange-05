@@ -31,11 +31,12 @@ function GoogleLogin({ buttonText }) {
       // Temporary solution
       window.location.href = "/";
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        toast.error(error.response.data.message);
-        return;
-      }
-      toast.error(error.message);
+      console.error("Error:", error);
+      // if (axios.isAxiosError(error)) {
+      //   toast.error(error.response.data.message);
+      //   return;
+      // }
+      // toast.error(error.message);
     }
   };
 

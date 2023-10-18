@@ -27,15 +27,16 @@ function Detail() {
         setMovies(data);
         console.log(data);
       } catch (error) {
-        if (axios.isAxiosError(error)) {
-          if (error.response.status === 401) {
-            localStorage.removeItem("token");
-          }
+        console.error("Error:", error);
+        // if (axios.isAxiosError(error)) {
+        //   if (error.response.status === 401) {
+        //     localStorage.removeItem("token");
+        //   }
 
-          toast.error(error.response.data.message);
-          return;
-        }
-        toast.error(error.message);
+        //   toast.error(error.response.data.message);
+        //   return;
+        // }
+        // toast.error(error.message);
       }
     };
 

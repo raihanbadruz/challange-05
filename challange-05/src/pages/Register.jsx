@@ -36,7 +36,7 @@ function Register() {
 
       localStorage.setItem("token", token);
 
-      navigate("/");
+      // navigate("/");
 
       // Temporary solution
       window.location.href = "/";
@@ -92,7 +92,7 @@ function Register() {
           </Form>
         </Col>
       </Row>
-      <Row>
+      {/* <Row>
         <Col>
           <h4 className="text-center">Or</h4>
         </Col>
@@ -101,7 +101,7 @@ function Register() {
         <Col className="text-center">
           <GoogleLogin buttonText="Register with Google 🚀" />
         </Col>
-      </Row>
+      </Row> */}
     </Container>
   );
 }
